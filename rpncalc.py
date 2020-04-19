@@ -70,18 +70,42 @@ def t_error(t):
 # build lexer
 lexer = lex.lex()
 
+# testing data
 data = ''' 35 + 48 33 22 11 - 33 sin 12 / 55.55 '''
 lexer.input(data)
 
-
 # lexer.token() goes through the tokens in order
-
-while True:
+# this loop prints everything in the lexer
+""" while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok)
+    print(tok)"""
 
-zz = Stack()
-zz.push(5)
-print(zz.top())
+### PARSING ###
+
+# precedence rule taken from sample infix calculator
+# postfix might not require precedence rules
+precedence = (
+    ('left','PLUS','MINUS'),
+    ('left','TIMES','DIVIDE'),
+    ('right','UMINUS'),
+    )
+
+#  parse grammar rules go here
+
+
+
+
+
+# build parser
+parser = yacc.yacc()
+
+# main function loop
+while True:
+    print("Reverse Polish Notation Calculator (type \"help\" for more information)")
+    try:
+        s = input('calc > ')   # Use raw_input on Python 2
+    except EOFError:
+        break
+    parser.parse(s)
