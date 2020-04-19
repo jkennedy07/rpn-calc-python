@@ -74,13 +74,19 @@ lexer = lex.lex()
 data = ''' 35 + 48 33 22 11 - 33 sin 12 / 55.55 '''
 lexer.input(data)
 
+
+rpnStack = Stack()
+
+
+
+
 # lexer.token() goes through the tokens in order
 # this loop prints everything in the lexer
-""" while True:
+while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok)"""
+    print(tok)
 
 ### PARSING ###
 
@@ -99,13 +105,39 @@ precedence = (
 
 
 # build parser
-parser = yacc.yacc()
+# parser = yacc.yacc()
+
+# RPN evaluation function
+
+
+
+
+
+
+"""
+def RPN(stack, tok):
+    if (tok.type() == ('NUMBER' | 'FLOAT')):
+        stack.push(tok)
+    elif tok.type() == 
+ """
+
+
+
+
+
+
+
+
+
+
+
+
 
 # main function loop
-while True:
+""" while True:
     print("Reverse Polish Notation Calculator (type \"help\" for more information)")
     try:
         s = input('calc > ')   # Use raw_input on Python 2
     except EOFError:
         break
-    parser.parse(s)
+    parser.parse(s) """
