@@ -18,7 +18,7 @@ tokens = (
     'MINUS',
     'TIMES',
     'DIVIDE',
-    'POWER',
+    'POWER',        # not required
     'LPAREN',
     'RPAREN',
     'SIN',
@@ -35,6 +35,7 @@ t_DIVIDE    = r'/'
 t_LPAREN    = r'\('
 t_RPAREN    = r'\)'
 t_POWER     = r'\^'     # consider allowing both ^ and ** operators
+                        # exponents are not required functionality
 # maybe use reserved words for sin cos tan
 # 4/18 seems to be working with this format plus invalid char ignore
 t_SIN       = r'[Ss][Ii][Nn]'
@@ -71,7 +72,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # testing data
-data = ''' 35 + 48 33 22 11 - 33 sin 12 / 55.55 '''
+data = ''' 35 + 48 33 22 -11 - 33 sin 12 / 55.55 '''
 lexer.input(data)
 
 
@@ -90,18 +91,78 @@ while True:
 
 ### PARSING ###
 
-# precedence rule taken from sample infix calculator
+
 # postfix might not require precedence rules
+
+
+# parse grammar rules go here
+# t[0] is the result, t[1] is the first argument, etc.
+
+### Below taken from sample calc #############
+##############################################
+
+# Parsing rules
+
 precedence = (
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE'),
     ('right','UMINUS'),
     )
 
-#  parse grammar rules go here
+# dictionary of names
+names = { }
+
+def p_statement_assign(t):
+    'statement : NAME EQUALS expression'
+    names[t[1]] = t[3]
+
+def p_statement_expr(t):
+    'statement : expression'
+    print(t[1])
+
+def p_expression_binop(t):
+    '''expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression'''
+    if t[2] == '+'  : t[0] = t[1] + t[3]
+    elif t[2] == '-': t[0] = t[1] - t[3]
+    elif t[2] == '*': t[0] = t[1] * t[3]
+    elif t[2] == '/': t[0] = t[1] / t[3]
+
+def p_expression_uminus(t):
+    'expression : MINUS expression %prec UMINUS'
+    t[0] = -t[2]
+
+def p_expression_group(t):
+    'expression : LPAREN expression RPAREN'
+    t[0] = t[2]
+
+def p_expression_number(t):
+    'expression : NUMBER'
+    t[0] = t[1]
+
+def p_expression_name(t):
+    'expression : NAME'
+    try:
+        t[0] = names[t[1]]
+    except LookupError:
+        print("Undefined name '%s'" % t[1])
+        t[0] = 0
+
+def p_error(t):
+    print("Syntax error at '%s'" % t.value)
 
 
 
+
+
+
+
+
+
+
+##############################################
 
 
 # build parser
