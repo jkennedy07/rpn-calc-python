@@ -31,8 +31,7 @@ tokens = (
     'RPAREN',
     'SIN',
     'COS',
-    'TAN',
-    'NAME'      # possible addition
+    'TAN'      
 )
 
 # regex rules
@@ -123,10 +122,6 @@ precedence = (
     )
 
 
-def p_statement_assign(t):
-    'statement : NAME EQUALS expression'
-    names[t[1]] = t[3]
-
 def p_statement_expr(t):
     'statement : expression'
     print(t[1])
@@ -154,14 +149,6 @@ def p_expression_number(t):
     '''expression : NUMBER
                   | FLOAT'''
     t[0] = t[1]
-
-def p_expression_name(t):
-    'expression : NAME'
-    try:
-        t[0] = names[t[1]]
-    except LookupError:
-        print("Undefined name '%s'" % t[1])
-        t[0] = 0
 
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
