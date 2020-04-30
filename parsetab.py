@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSCOS DIVIDE EQUALS FLOAT LPAREN MINUS NUMBER PLUS POWER RPAREN SIN TAN TIMESstatement : expressionexpression : MINUS expression %prec UMINUSexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : LPAREN expression RPARENexpression : NUMBER\n                  | FLOAT'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSCOS DIVIDE EQUALS FLOAT LPAREN MINUS NUMBER PLUS POWER RPAREN SIN TAN TIMESstatement : expressionexpression : MINUS expression %prec UMINUSexpression : expression expression PLUS\n                  | expression expression MINUS\n                  | expression expression TIMES\n                  | expression expression DIVIDEexpression : expression SIN\n                  | expression COS\n                  | expression TANexpression : LPAREN expression RPARENexpression : NUMBER\n                  | FLOAT'
     
-_lr_action_items = {'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,],[3,8,3,3,-8,-9,3,3,3,3,-2,8,-3,-4,-5,-6,-7,]),'LPAREN':([0,3,4,7,8,9,10,],[4,4,4,4,4,4,4,]),'NUMBER':([0,3,4,7,8,9,10,],[5,5,5,5,5,5,5,]),'FLOAT':([0,3,4,7,8,9,10,],[6,6,6,6,6,6,6,]),'$end':([1,2,5,6,11,13,14,15,16,17,],[0,-1,-8,-9,-2,-3,-4,-5,-6,-7,]),'PLUS':([2,5,6,11,12,13,14,15,16,17,],[7,-8,-9,-2,7,-3,-4,-5,-6,-7,]),'TIMES':([2,5,6,11,12,13,14,15,16,17,],[9,-8,-9,-2,9,9,9,-5,-6,-7,]),'DIVIDE':([2,5,6,11,12,13,14,15,16,17,],[10,-8,-9,-2,10,10,10,-5,-6,-7,]),'RPAREN':([5,6,11,12,13,14,15,16,17,],[-8,-9,-2,17,-3,-4,-5,-6,-7,]),}
+_lr_action_items = {'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,],[3,3,3,3,-11,-12,14,-7,-8,-9,-2,3,-3,-4,-5,-6,-10,]),'LPAREN':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,],[4,4,4,4,-11,-12,4,-7,-8,-9,-2,4,-3,-4,-5,-6,-10,]),'NUMBER':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,],[5,5,5,5,-11,-12,5,-7,-8,-9,-2,5,-3,-4,-5,-6,-10,]),'FLOAT':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,],[6,6,6,6,-11,-12,6,-7,-8,-9,-2,6,-3,-4,-5,-6,-10,]),'$end':([1,2,5,6,8,9,10,11,13,14,15,16,17,],[0,-1,-11,-12,-7,-8,-9,-2,-3,-4,-5,-6,-10,]),'SIN':([2,5,6,7,8,9,10,11,12,13,14,15,16,17,],[8,-11,-12,8,-7,-8,-9,-2,8,-3,-4,-5,-6,-10,]),'COS':([2,5,6,7,8,9,10,11,12,13,14,15,16,17,],[9,-11,-12,9,-7,-8,-9,-2,9,-3,-4,-5,-6,-10,]),'TAN':([2,5,6,7,8,9,10,11,12,13,14,15,16,17,],[10,-11,-12,10,-7,-8,-9,-2,10,-3,-4,-5,-6,-10,]),'PLUS':([5,6,7,8,9,10,11,13,14,15,16,17,],[-11,-12,13,-7,-8,-9,-2,-3,-4,-5,-6,-10,]),'TIMES':([5,6,7,8,9,10,11,13,14,15,16,17,],[-11,-12,15,-7,-8,-9,-2,-3,-4,-5,-6,-10,]),'DIVIDE':([5,6,7,8,9,10,11,13,14,15,16,17,],[-11,-12,16,-7,-8,-9,-2,-3,-4,-5,-6,-10,]),'RPAREN':([5,6,8,9,10,11,12,13,14,15,16,17,],[-11,-12,-7,-8,-9,-2,17,-3,-4,-5,-6,-10,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,3,4,7,8,9,10,],[2,11,12,13,14,15,16,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,2,3,4,7,11,12,14,],[2,7,11,12,7,7,7,11,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -29,11 +29,14 @@ _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
   ('statement -> expression','statement',1,'p_statement_expr','rpncalc.py',126),
   ('expression -> MINUS expression','expression',2,'p_expression_uminus','rpncalc.py',130),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','rpncalc.py',134),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','rpncalc.py',135),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','rpncalc.py',136),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','rpncalc.py',137),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','rpncalc.py',145),
-  ('expression -> NUMBER','expression',1,'p_expression_number','rpncalc.py',149),
-  ('expression -> FLOAT','expression',1,'p_expression_number','rpncalc.py',150),
+  ('expression -> expression expression PLUS','expression',3,'p_expression_binop','rpncalc.py',134),
+  ('expression -> expression expression MINUS','expression',3,'p_expression_binop','rpncalc.py',135),
+  ('expression -> expression expression TIMES','expression',3,'p_expression_binop','rpncalc.py',136),
+  ('expression -> expression expression DIVIDE','expression',3,'p_expression_binop','rpncalc.py',137),
+  ('expression -> expression SIN','expression',2,'p_expression_trig','rpncalc.py',144),
+  ('expression -> expression COS','expression',2,'p_expression_trig','rpncalc.py',145),
+  ('expression -> expression TAN','expression',2,'p_expression_trig','rpncalc.py',146),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','rpncalc.py',152),
+  ('expression -> NUMBER','expression',1,'p_expression_number','rpncalc.py',156),
+  ('expression -> FLOAT','expression',1,'p_expression_number','rpncalc.py',157),
 ]

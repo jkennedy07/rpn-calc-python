@@ -47,11 +47,23 @@ t_POWER     = r'\^'     # consider allowing both ^ and ** operators
 
 # maybe use reserved words for sin cos tan
 # 4/18 seems to be working with this format plus invalid char ignore
-t_SIN       = r'[Ss][Ii][Nn]'
-t_COS       = r'[Cc][Oo][Ss]'
-t_TAN       = r'[Tt][Aa][Nn]'
+def t_SIN(t):
+    r'[Ss][Ii][Nn]'
+    t.value = 'SIN'
+    return t
+
+def t_COS(t):
+    r'[Cc][Oo][Ss]'
+    t.value = 'COS'
+    return t
+
+def t_TAN(t):
+    r'[Tt][Aa][Nn]'
+    t.value = 'TAN'
+    return t
+
 # this is for a normal calculator
-# for RPN white space must be tracked
+# for RPN white space must be tracked (fixed)
 # as configured now it creates separate tokens when spaces are found
 # between numbers
 t_ignore    = ' \t'     # ignore tabs and spaces
@@ -82,7 +94,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # testing data
-data = ''' 3 11 +'''
+data = ''' 3 11 + 5 Sin'''
 lexer.input(data)
 
 
@@ -93,13 +105,13 @@ rpnStack = Stack()
 
 # lexer.token() goes through the tokens in order
 # this loop prints everything in the lexer
-'''while True:
+while True:
     tok = lexer.token()
     if not tok:
         break
     print(tok)
 
-'''
+
 
 #########################
 ###### PARSING ##########
@@ -131,15 +143,22 @@ def p_expression_uminus(t):
     t[0] = -t[2]
 
 def p_expression_binop(t):
-    '''expression : expression PLUS expression
-                  | expression MINUS expression
-                  | expression TIMES expression
-                  | expression DIVIDE expression'''
-    if t[2] == '+'  : t[0] = t[1] + t[3]
-    elif t[2] == '-': t[0] = t[1] - t[3]
-    elif t[2] == '*': t[0] = t[1] * t[3]
-    elif t[2] == '/': t[0] = t[1] / t[3]
+    '''expression : expression expression PLUS
+                  | expression expression MINUS
+                  | expression expression TIMES
+                  | expression expression DIVIDE'''
+    if t[3] == '+'  : t[0] = t[1] + t[2]
+    elif t[3] == '-': t[0] = t[1] - t[2]
+    elif t[3] == '*': t[0] = t[1] * t[2]
+    elif t[3] == '/': t[0] = t[1] / t[2]
 
+def p_expression_trig(t):
+    '''expression : expression SIN
+                  | expression COS
+                  | expression TAN'''
+    if t[2] == 'SIN' : t[0] = math.sin(t[1])
+    elif t[2] == 'COS' : t[0] = math.cos(t[1])
+    elif t[2] == 'TAN' : t[0] = math.tan(t[1])
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
