@@ -105,6 +105,7 @@ rpnStack = Stack()
 
 # lexer.token() goes through the tokens in order
 # this loop prints everything in the lexer
+
 while True:
     tok = lexer.token()
     if not tok:
@@ -190,21 +191,14 @@ def RPN(stack, tok):
 
 
 
-
-
-
-
-
-
-
-
-
-
 # main function loop
 while True:
-    print("Reverse Polish Notation Calculator")
+    print("Reverse Polish Notation Calculator (type \'tips\' for information, or ctrl+Z to exit)")
     try:
         s = input(' --> ')   # Use raw_input on Python 2
+        if (s == 'tips'):
+            print("here are tips")
+            continue
         #print(data)
         #s = data
     except EOFError:
