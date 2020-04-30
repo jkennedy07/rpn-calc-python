@@ -6,23 +6,17 @@
 #
 #
 
-
 #  Sample input:
 #  3.141 ( 2 3 +) (1.571 sin) * *
 #  ~= 15.708
-
-
 
 import math
 import ply.lex as lex
 import ply.yacc as yacc
 
 ########################
-###### lexer ###########
+###### LEXER ###########
 ########################
-
-# basic parameters
-
 
 tokens = (
     'INT',
@@ -32,13 +26,14 @@ tokens = (
     'TIMES',
     'DIVIDE',
     'POWER', 
-    'SQRT',     
+    'SQRT',
+    'ABS',     
     'SIN',
     'COS',
     'TAN'     
 )
 
-# regex rules
+# token definitions
 t_ignore    = ' \t()\n='     # ignore tabs and spaces
 
 t_PLUS      = r'\+'
@@ -50,6 +45,11 @@ t_POWER     = r'\^'
 def t_SQRT(t):
     r'[Ss][Qq][Rr][Tt]'
     t.value = 'SQRT'
+    return t
+
+def t_ABS(t):
+    r'[Aa][Bb][Ss]'
+    t.value = 'ABS'
     return t
 
 def t_SIN(t):
@@ -87,8 +87,8 @@ def t_error(t):
 lexer = lex.lex()
 
 # testing data
-data = ''' 3 11 + 5 Sin'''
-lexer.input(data)
+# data = ''' 3 11 + 5 Sin'''
+# lexer.input(data)
 
 # lexer.token() goes through the tokens in order when called
 # this loop prints everything in the lexer to the console for testing
@@ -100,7 +100,7 @@ lexer.input(data)
 
 
 #########################
-###### PARSING ##########
+###### PARSER ###########
 #########################
 
 # left means left associative operators
@@ -137,6 +137,10 @@ def p_expression_sqrt(t):
     '''expression : expression SQRT'''
     if t[2] == 'SQRT' : t[0] = math.sqrt(t[1])
 
+def p_expression_abs(t):
+    '''expression : expression ABS'''
+    if t[2] == 'ABS' : t[0] = abs(t[1])
+
 def p_expression_trig(t):
     '''expression : expression SIN
                   | expression COS
@@ -160,12 +164,13 @@ parser = yacc.yacc()
 while True:
     print("Reverse Polish Notation Calculator (type \'tips\' for information, or ctrl+Z to exit)")
     try:
-        s = input(' --> ')   # Use raw_input on Python 2
+        s = input(' --> ') 
         if (s == 'tips'):
             print("This program does calculations in Reverse Polish Notation, also called postfix.")
             print("Operations are binary or unary. This calculator is capable of performing")
             print("add, subtract, multiply, divide, and the basic trig functions sin, cos, and tan.")
             print("Exponents take the form: x y ^ ---> x^y. For square root use \'sqrt\'")
+            print("For absolute value use \'abs\'.")
             print("The calculator ignores parentheses, but you may use them for clarity.\n")
             continue
     except EOFError:
