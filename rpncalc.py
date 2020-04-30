@@ -6,6 +6,13 @@
 #
 #
 
+
+#  Sample input:
+#  3.141 ( 2 3 +) (1.571 sin) * *
+#  ~= 15.708
+
+
+
 import math
 import ply.lex as lex
 import ply.yacc as yacc
@@ -123,7 +130,7 @@ while True:
 # parse grammar rules go here
 # t[0] is the result, t[1] is the first argument, etc.
 
-names = { }
+# names = { }
 
 # left means left associative operators
 # right means the opposite, as in unary minus
@@ -182,25 +189,17 @@ parser = yacc.yacc()
 # probably not needed as yacc will use stack and recursion
 # internally to evaluate complex inputs
 
-"""
-def RPN(stack, tok):
-    if (tok.type() == ('NUMBER' | 'FLOAT')):
-        stack.push(tok)
-    elif tok.type() == 
- """
-
-
-
 # main function loop
 while True:
     print("Reverse Polish Notation Calculator (type \'tips\' for information, or ctrl+Z to exit)")
     try:
         s = input(' --> ')   # Use raw_input on Python 2
         if (s == 'tips'):
-            print("here are tips")
+            print("This program does calculations in Reverse Polish Notation, also called postfix.")
+            print("Operations are binary or unary. This calculator is capable of performing")
+            print("add, subtract, multiply, divide, and the basic trig functions sin, cos, and tan.")
+            print("Parentheses are optional, but may be desired for clarity.\n")
             continue
-        #print(data)
-        #s = data
     except EOFError:
         break
     parser.parse(s)
