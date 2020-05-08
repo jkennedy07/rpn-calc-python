@@ -1,8 +1,9 @@
 #   
-#   Draft RPN Calculator
-#   For assignment 1.1, language structure class
+#   RPN Calculator
+#   For assignment 1.1, CPSC 3380 Language Structures
+#   UALR - Spring 2020
 #   an implementation of the PLY - python lex & yacc modules
-#
+#   Jason Kennedy 
 #
 #
 
@@ -11,7 +12,7 @@
 #  ~= 15.708
 
 import math
-import ply.lex as lex
+import ply.lex as lex   
 import ply.yacc as yacc
 
 ########################
